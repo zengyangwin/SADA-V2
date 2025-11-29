@@ -101,17 +101,17 @@ td{
   margin: 0; /* 移除默认外边距 */
   line-height: 1; /* 设置行高为1 */
   letter-spacing: 0; /* 取消字间距 */
-  font-size: 0.8vw;
+  font-size: 1.12vw;
 }
 
 .csyl-text {
   color: #000000;
   font-family: '微软雅黑', 'Microsoft Times New Roman', 'sans-serif';
-  text-align: center;
+  text-align: left;
   margin: 0; /* 移除默认外边距 */
-  line-height: 1.5vh; /* 设置行高为1 */
+  line-height: 1.8vh; /* 设置行高为1 */
   letter-spacing: 0; /* 取消字间距 */
-
+  font-size: 0.9vw;
 }
 
 
