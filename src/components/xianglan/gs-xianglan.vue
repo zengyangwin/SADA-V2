@@ -468,7 +468,7 @@ onUnmounted(() => {
             <td colspan="2">清水池液位</td>
             <td>{{ formatLevel(fgsData.yq_level) }}</td>
             <td colspan="2">出水压力</td>
-            <td>{{ zc_formatPressure(fgsData.yq_out_pressure) }}</td>
+            <td>{{ fgsData.yq_out_pressure?.toFixed(2) }} mPa</td>
           </tr>
           <tr>
             <td colspan="2">水泵</td>

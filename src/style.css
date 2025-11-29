@@ -93,6 +93,34 @@ td{
   position:relative;
 }
 
+
+.csyl-marker {
+  font-family: '微软雅黑', 'Microsoft Times New Roman', 'sans-serif';
+  padding: 2px 4px;
+  display: inline-block; /* 让容器大小根据内容自适应 */
+}
+
+.csyl-title {
+  color: #0d37a1;
+  font-weight: bold;
+  text-align: center;
+  margin: 0; /* 移除默认外边距 */
+  line-height: 1; /* 设置行高为1 */
+  letter-spacing: 0; /* 取消字间距 */
+  font-size: 0.8vw;
+}
+
+.csyl-text {
+  color: #000000;
+  font-family: '微软雅黑', 'Microsoft Times New Roman', 'sans-serif';
+  text-align: center;
+  margin: 0; /* 移除默认外边距 */
+  line-height: 1.5vh; /* 设置行高为1 */
+  letter-spacing: 0; /* 取消字间距 */
+
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
