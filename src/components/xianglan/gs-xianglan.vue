@@ -36,52 +36,27 @@ function updateAllData() {
   updatefengongsi()
 }
 
-// 数据格式化函数
-function formatFlow(value) {
-  return value !== undefined && value !== null ? value.toFixed(2) + ' m³/h' : '-'
-}
-function zc_hc_formatFlow(value) {
-  return value !== undefined && value !== null ? value.toFixed(2) + ' L/h' : '-'
-}
-
-function formatTotalFlow(value) {
-  return value !== undefined && value !== null ? Math.round(value) + ' m³' : '-'
-}
-
-function formatTurbidity(value) {
-  return value !== undefined && value !== null ? value.toFixed(2) + ' NTU' : '-'
-}
-
-function formatPH(value) {
-  return value !== undefined && value !== null ? value.toFixed(1) : '-'
-}
-
-function formatTemperature(value) {
-  return value !== undefined && value !== null ? value.toFixed(1) + ' °C' : '-'
-}
-
-function formatResidualChlorine(value) {
-  return value !== undefined && value !== null ? value.toFixed(2) + ' mg/L' : '-'
-}
-
-function formatLevel(value) {
-  return value !== undefined && value !== null ? value.toFixed(2) + ' m' : '-'
-}
-
-function formatCurrent(value) {
-  return value !== undefined && value !== null ? value.toFixed(1) + ' A' : '-'
-}
-
-function formatFrequency(value) {
-  return value !== undefined && value !== null ? value.toFixed(0) + ' Hz' : '-'
-}
-
-function zc_formatPressure(value) {
-  return value !== undefined && value !== null ? ((value/100).toFixed(2)) + ' MPa' : '-'
-}
-
-function formatValveOpening(value) {
-  return value !== undefined && value !== null ? value.toFixed(1) + ' %' : '-'
+// 统一格式化函数
+function formatValue(value, type = 'default') {
+  if (value === undefined || value === null) return '-'
+  
+  const formatters = {
+    flow: (v) => v.toFixed(2) + ' m³/h',
+    hc_flow: (v) => v.toFixed(2) + ' L/h',
+    totalFlow: (v) => Math.round(v) + ' m³',
+    turbidity: (v) => v.toFixed(2) + ' NTU',
+    ph: (v) => v.toFixed(1),
+    temperature: (v) => v.toFixed(1) + ' °C',
+    residualChlorine: (v) => v.toFixed(2) + ' mg/L',
+    level: (v) => v.toFixed(2) + ' m',
+    current: (v) => v.toFixed(1) + ' A',
+    frequency: (v) => v.toFixed(0) + ' Hz',
+    pressure: (v) => ((v/100).toFixed(2)) + ' MPa',
+    valveOpening: (v) => v.toFixed(1) + ' %',
+    default: (v) => v.toString()
+  }
+  
+  return formatters[type] ? formatters[type](value) : formatters.default(value)
 }
 
 // 运行状态格式化函数
@@ -134,29 +109,29 @@ onUnmounted(() => {
           <tbody>
             <tr>
               <td>进水流量</td>
-              <td>{{ formatFlow(zcData.zc_influent_instant_flow) }}</td>
+              <td>{{ formatValue(zcData.zc_influent_instant_flow, 'flow') }}</td>
               <td>进水浊度</td>
-              <td>{{ formatTurbidity(zcData.zc_influent_turbidity) }}</td>
+              <td>{{ formatValue(zcData.zc_influent_turbidity, 'turbidity') }}</td>
               <td>进水pH</td>
-              <td>{{ formatPH(zcData.zc_influent_ph) }}</td>
+              <td>{{ formatValue(zcData.zc_influent_ph, 'ph') }}</td>
               <td>进水温度</td>
-              <td>{{ formatTemperature(zcData.zc_influent_temperature) }}</td>	
+              <td>{{ formatValue(zcData.zc_influent_temperature, 'temperature') }}</td>	
             </tr>
             <tr>
               <td>出水流量</td>
-              <td>{{ formatFlow(zcData.zc_pingliu_effluent_flow+zcData.zc_xiqu_instant_flow+zcData.zc_beiqu_instant_flow) }}</td>
+              <td>{{ formatValue(zcData.zc_pingliu_effluent_flow+zcData.zc_xiqu_instant_flow+zcData.zc_beiqu_instant_flow, 'flow') }}</td>
               <td>出水浊度</td>
-              <td>{{ formatTurbidity(zcData.zc_effluent_turbidity) }}</td>
+              <td>{{ formatValue(zcData.zc_effluent_turbidity, 'turbidity') }}</td>
               <td>出水pH</td>
-              <td>{{ formatPH(zcData.zc_effluent_ph) }}</td>
+              <td>{{ formatValue(zcData.zc_effluent_ph, 'ph') }}</td>
               <td>出水余氯</td>
-              <td>{{ formatResidualChlorine(zcData.zc_effluent_residual_chlorine) }}</td>	
+              <td>{{ formatValue(zcData.zc_effluent_residual_chlorine, 'residualChlorine') }}</td>	
             </tr>
             <tr>
               <td colspan="2">进水累积流量</td>
-              <td colspan="2">{{ formatTotalFlow(zcData.zc_influent_total_flow) }}</td>
+              <td colspan="2">{{ formatValue(zcData.zc_influent_total_flow, 'totalFlow') }}</td>
               <td colspan="2">出水累积流量</td>
-              <td colspan="2">{{ formatTotalFlow(zcData.zc_pingliu_effluent_total_flow+zcData.zc_xiqu_total_flow+zcData.zc_beiqu_total_flow) }}</td>	
+              <td colspan="2">{{ formatValue(zcData.zc_pingliu_effluent_total_flow+zcData.zc_xiqu_total_flow+zcData.zc_beiqu_total_flow, 'totalFlow') }}</td>	
             </tr>
           </tbody>
         </table>
@@ -175,26 +150,26 @@ onUnmounted(() => {
               <tr>
                 <td>1#取水泵</td>
                 <td>{{ getIntakePumpStatus(1) }}</td>
-                <td>{{ formatCurrent(zcData.zc_intake_pump1_current) }}</td>
-                <td>{{ formatFrequency(zcData.zc_intake_pump1_frequency) }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump1_current, 'current') }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump1_frequency, 'frequency') }}</td>
               </tr>
               <tr>
                 <td>2#取水泵</td>
                 <td>{{ getIntakePumpStatus(2) }}</td>
-                <td>{{ formatCurrent(zcData.zc_intake_pump2_current) }}</td>
-                <td>{{ formatFrequency(zcData.zc_intake_pump2_frequency) }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump2_current, 'current') }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump2_frequency, 'frequency') }}</td>
               </tr>
               <tr>
                 <td>3#取水泵</td>
                 <td>{{ getIntakePumpStatus(3) }}</td>
-                <td>{{ formatCurrent(zcData.zc_intake_pump3_current) }}</td>
-                <td>{{ formatFrequency(zcData.zc_intake_pump3_frequency) }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump3_current, 'current') }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump3_frequency, 'frequency') }}</td>
               </tr>
               <tr>
                 <td>4#取水泵</td>
                 <td>{{ getIntakePumpStatus(4) }}</td>
-                <td>{{ formatCurrent(zcData.zc_intake_pump4_current) }}</td>
-                <td>{{ formatFrequency(zcData.zc_intake_pump4_frequency) }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump4_current, 'current') }}</td>
+                <td>{{ formatValue(zcData.zc_intake_pump4_frequency, 'frequency') }}</td>
               </tr>
             </tbody>
           </table>
@@ -211,27 +186,27 @@ onUnmounted(() => {
               </tr>
               <tr>
                 <td>东区南区</td>
-                <td>{{ formatFlow(zcData.zc_pingliu_effluent_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_pingliu_effluent_flow, 'flow') }}</td>
                 <td>-</td>
-                <td>{{ formatTotalFlow(zcData.zc_pingliu_effluent_total_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_pingliu_effluent_total_flow, 'totalFlow') }}</td>
               </tr>
               <tr>
                 <td>北区</td>
-                <td>{{ formatFlow(zcData.zc_beiqu_instant_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_beiqu_instant_flow, 'flow') }}</td>
                 <td>-</td>
-                <td>{{ formatTotalFlow(zcData.zc_beiqu_total_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_beiqu_total_flow, 'totalFlow') }}</td>
               </tr>
               <tr>
                 <td>西区</td>
-                <td>{{ formatFlow(zcData.zc_xiqu_instant_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_xiqu_instant_flow, 'flow') }}</td>
                 <td>-</td>
-                <td>{{ formatTotalFlow(zcData.zc_xiqu_total_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_xiqu_total_flow, 'totalFlow') }}</td>
               </tr>
               <tr>
                 <td>累积</td>
-                <td>{{ formatFlow(zcData.zc_xiqu_instant_flow+zcData.zc_beiqu_instant_flow+zcData.zc_pingliu_effluent_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_xiqu_instant_flow+zcData.zc_beiqu_instant_flow+zcData.zc_pingliu_effluent_flow, 'flow') }}</td>
                 <td>-</td>
-                <td>{{ formatTotalFlow(zcData.zc_pingliu_effluent_total_flow+zcData.zc_xiqu_total_flow+zcData.zc_beiqu_total_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_pingliu_effluent_total_flow+zcData.zc_xiqu_total_flow+zcData.zc_beiqu_total_flow, 'totalFlow') }}</td>
               </tr>
             </tbody>        
           </table>
@@ -250,15 +225,15 @@ onUnmounted(() => {
               </tr>
               <tr>
                 <td>1#预沉池</td>
-                <td>{{ formatTurbidity(zcData.zc_presedimentation_tank1_turbidity) }}</td>
+                <td>{{ formatValue(zcData.zc_presedimentation_tank1_turbidity, 'turbidity') }}</td>
                 <td>1#沉淀池</td>
-                <td>{{ formatTurbidity(zcData.zc_sedimentation_tank1_turbidity) }}</td>
+                <td>{{ formatValue(zcData.zc_sedimentation_tank1_turbidity, 'turbidity') }}</td>
               </tr>
               <tr>
                 <td>2#预沉池</td>
-                <td>{{ formatTurbidity(zcData.zc_presedimentation_tank2_turbidity) }}</td>
+                <td>{{ formatValue(zcData.zc_presedimentation_tank2_turbidity, 'turbidity') }}</td>
                 <td>2#沉淀池</td>
-                <td>{{ formatTurbidity(zcData.zc_sedimentation_tank2_turbidity) }}</td>
+                <td>{{ formatValue(zcData.zc_sedimentation_tank2_turbidity, 'turbidity') }}</td>
               </tr>
               <tr>
                 <td>3#预沉池</td>
@@ -281,34 +256,34 @@ onUnmounted(() => {
               </tr>
               <tr>
                 <td>1#</td>
-                <td>{{ formatLevel(zcData.zc_v_filter1_level) }}</td>
-                <td>{{ formatValveOpening(zcData.zc_v_filter1_water_valve_opening) }}</td>
-                <td rowspan="6">{{ formatTurbidity(zcData.zc_effluent_turbidity) }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter1_level, 'level') }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter1_water_valve_opening, 'valveOpening') }}</td>
+                <td rowspan="6">{{ formatValue(zcData.zc_effluent_turbidity, 'turbidity') }}</td>
               </tr>
               <tr>
                 <td>2#</td>
-                <td>{{ formatLevel(zcData.zc_v_filter2_level) }}</td>
-                <td>{{ formatValveOpening(zcData.zc_v_filter2_water_valve_opening) }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter2_level, 'level') }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter2_water_valve_opening, 'valveOpening') }}</td>
               </tr>
               <tr>
                 <td>3#</td>
-                <td>{{ formatLevel(zcData.zc_v_filter3_level) }}</td>
-                <td>{{ formatValveOpening(zcData.zc_v_filter3_water_valve_opening) }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter3_level, 'level') }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter3_water_valve_opening, 'valveOpening') }}</td>
               </tr>
               <tr>
                 <td>4#</td>
-                <td>{{ formatLevel(zcData.zc_v_filter4_level) }}</td>
-                <td>{{ formatValveOpening(zcData.zc_v_filter4_water_valve_opening) }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter4_level, 'level') }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter4_water_valve_opening, 'valveOpening') }}</td>
               </tr>
               <tr>
                 <td>5#</td>
-                <td>{{ formatLevel(zcData.zc_v_filter5_level) }}</td>
-                <td>{{ formatValveOpening(zcData.zc_v_filter5_water_valve_opening) }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter5_level, 'level') }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter5_water_valve_opening, 'valveOpening') }}</td>
               </tr>
               <tr>
                 <td>6#</td>
-                <td>{{ formatLevel(zcData.zc_v_filter6_level) }}</td>
-                <td>{{ formatValveOpening(zcData.zc_v_filter6_water_valve_opening) }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter6_level, 'level') }}</td>
+                <td>{{ formatValue(zcData.zc_v_filter6_water_valve_opening, 'valveOpening') }}</td>
               </tr>
             </tbody>
           </table>
@@ -323,11 +298,11 @@ onUnmounted(() => {
               </tr>
               <tr>
                 <td>1#</td>
-                <td>{{ formatLevel(zcData.zc_clean_water_tank1) }}</td>
+                <td>{{ formatValue(zcData.zc_clean_water_tank1, 'level') }}</td>
               </tr>
               <tr>
                 <td>2#</td>
-                <td>{{ formatLevel(zcData.zc_clean_water_tank2) }}</td>
+                <td>{{ formatValue(zcData.zc_clean_water_tank2, 'level') }}</td>
               </tr>
               <tr>
                 <td>新庙</td>
@@ -352,20 +327,20 @@ onUnmounted(() => {
               <tr>
                 <td>1#送水泵</td>
                 <td>{{ getDeliveryPumpStatus(1) }}</td>
-                <td>{{ formatCurrent(zcData.zc_delivery_pump1_current) }}</td>
-                <td>{{ formatFrequency(zcData.zc_delivery_pump1_frequency) }}</td>
-                <td rowspan="3">{{ zc_formatPressure(zcData.zc_delivery_pump1_pressure) }}</td>
+                <td>{{ formatValue(zcData.zc_delivery_pump1_current, 'current') }}</td>
+                <td>{{ formatValue(zcData.zc_delivery_pump1_frequency, 'frequency') }}</td>
+                <td rowspan="3">{{ formatValue(zcData.zc_delivery_pump1_pressure, 'pressure') }}</td>
               </tr>
               <tr>
                 <td>2#送水泵</td>
                 <td>{{ getDeliveryPumpStatus(2) }}</td>
-                <td>{{ formatCurrent(zcData.zc_delivery_pump2_current) }}</td>
-                <td>{{ formatFrequency(zcData.zc_delivery_pump2_frequency) }}</td>
+                <td>{{ formatValue(zcData.zc_delivery_pump2_current, 'current') }}</td>
+                <td>{{ formatValue(zcData.zc_delivery_pump2_frequency, 'frequency') }}</td>
               </tr>
               <tr>
                 <td>3#送水泵（错误）</td>
                 <td>{{ getDeliveryPumpStatus(3) }}</td>
-                <td>{{ formatCurrent(zcData.zc_delivery_pump3_current) }}</td>
+                <td>{{ formatValue(zcData.zc_delivery_pump3_current, 'current') }}</td>
                 <td>工频</td>
               </tr>
             </tbody>
@@ -377,19 +352,19 @@ onUnmounted(() => {
             <tbody>
               <tr>
                 <td>成品罐液位</td>
-                <td>{{ formatLevel(zcData.zc_sodium_hypochlorite_level/100) }}</td>
+                <td>{{ formatValue(zcData.zc_sodium_hypochlorite_level/100, 'level') }}</td>
               </tr>
               <tr>
                 <td>前加氯流量（1#泵）</td>
-                <td>{{ zc_hc_formatFlow(zcData.zc_sodium_hypochlorite_pre_dosing_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_sodium_hypochlorite_pre_dosing_flow, 'hc_flow') }}</td>
               </tr>
               <tr>
                 <td>备用加氯流量（2#泵）</td>
-                <td>{{ zc_hc_formatFlow(zcData.zc_sodium_hypochlorite_post_dosing_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_sodium_hypochlorite_post_dosing_flow, 'hc_flow') }}</td>
               </tr>
               <tr>
                 <td>后加氯流量（3#泵）</td>
-                <td>{{ zc_hc_formatFlow(zcData.zc_sodium_hypochlorite_backup_dosing_flow) }}</td>
+                <td>{{ formatValue(zcData.zc_sodium_hypochlorite_backup_dosing_flow, 'hc_flow') }}</td>
               </tr>
             </tbody>
           </table>
@@ -402,46 +377,46 @@ onUnmounted(() => {
         <tbody>
           <tr>
             <td>进水流量</td>
-            <td>{{ formatFlow(fgsData.jzp_line1_xjg_flow+fgsData.jzp_line2_mzq_flow+fgsData.xjg_bs_instant_flow) }}</td>
+            <td>{{ formatValue(fgsData.jzp_line1_xjg_flow+fgsData.jzp_line2_mzq_flow+fgsData.xjg_bs_instant_flow, 'flow') }}</td>
             <td>进水浊度</td>
-            <td>{{ formatTurbidity(fgsData.jzp_in_turbidity) }}</td>
+            <td>{{ formatValue(fgsData.jzp_in_turbidity, 'turbidity') }}</td>
             <td>出水pH</td>
-            <td>{{ formatPH(fgsData.jzp_out_ph) }}</td>
+            <td>{{ formatValue(fgsData.jzp_out_ph, 'ph') }}</td>
           </tr>
           <tr>
             <td>出水流量</td>
-            <td>{{ formatFlow(fgsData.jzp_out_flow) }}</td>
+            <td>{{ formatValue(fgsData.jzp_out_flow, 'flow') }}</td>
             <td>出水浊度</td>
-            <td>{{ formatTurbidity(fgsData.jzp_out_turbidity) }}</td>
+            <td>{{ formatValue(fgsData.jzp_out_turbidity, 'turbidity') }}</td>
             <td>出水余氯</td>
-            <td>{{ formatResidualChlorine(fgsData.jzp_out_chlorine_dioxide) }}</td>
+            <td>{{ formatValue(fgsData.jzp_out_chlorine_dioxide, 'residualChlorine') }}</td>
           </tr>
           <tr>
             <td colspan="2">进水累积流量</td>
-            <td>{{ formatTotalFlow(fgsData.xjg_bs_accum_flow+fgsData.jzp_line1_xjg_flow+fgsData.jzp_line2_mzq_flow) }}</td>
+            <td>{{ formatValue(fgsData.xjg_bs_accum_flow+fgsData.jzp_line1_xjg_flow+fgsData.jzp_line2_mzq_flow, 'totalFlow') }}</td>
             <td colspan="2">出水累积流量</td>
-            <td>{{ formatTotalFlow(fgsData.jzp_out_accum_flow) }}</td>
+            <td>{{ formatValue(fgsData.jzp_out_accum_flow, 'totalFlow') }}</td>
           </tr>
           <tr>
             <td>1#清水池液位</td>
-            <td colspan="2">{{ formatLevel(fgsData.jzp_line1_level) }}</td>
+            <td colspan="2">{{ formatValue(fgsData.jzp_line1_level, 'level') }}</td>
             <td colspan="2">2#清水池液位</td>
-            <td>{{ formatLevel(fgsData.jzp_line2_level) }}</td>
+            <td>{{ formatValue(fgsData.jzp_line2_level, 'level') }}</td>
           </tr>
           <tr>
             <td colspan="2" rowspan="2">1#生产线进水流量</td>
-            <td rowspan="2">{{ formatFlow(fgsData.jzp_line1_xjg_flow) }}</td>
+            <td rowspan="2">{{ formatValue(fgsData.jzp_line1_xjg_flow, 'flow') }}</td>
             <td rowspan="2">2#生产线</td>
             <td>名左渠</td>
-            <td>{{ formatFlow(fgsData.jzp_line2_mzq_flow) }}</td>
+            <td>{{ formatValue(fgsData.jzp_line2_mzq_flow, 'flow') }}</td>
           </tr>
           <tr>
             <td>徐家沟</td>
-            <td>{{ formatFlow(fgsData.xjg_bs_instant_flow) }}</td>
+            <td>{{ formatValue(fgsData.xjg_bs_instant_flow, 'flow') }}</td>
           </tr>
           <tr>
             <td>总厂补水流量</td>
-            <td colspan="5">{{ formatFlow(fgsData.jzp_in_instant_flow) }}</td>
+            <td colspan="5">{{ formatValue(fgsData.jzp_in_instant_flow, 'flow') }}</td>
           </tr>
         </tbody>
       </table>
@@ -450,23 +425,23 @@ onUnmounted(() => {
         <tbody>
           <tr>
             <td>进水流量</td>
-            <td>{{ formatFlow(fgsData.yq_in_instant_flow) }}</td>
+            <td>{{ formatValue(fgsData.yq_in_instant_flow, 'flow') }}</td>
             <td>进水浊度</td>
-            <td>{{ formatTurbidity(fgsData.yq_in_turbidity) }}</td>
+            <td>{{ formatValue(fgsData.yq_in_turbidity, 'turbidity') }}</td>
             <td>出水pH</td>
-            <td>{{ formatPH(fgsData.yq_out_ph) }}</td>
+            <td>{{ formatValue(fgsData.yq_out_ph, 'ph') }}</td>
           </tr>
           <tr>
             <td>出水流量</td>
-            <td>{{ formatFlow(fgsData.yq_out_flow) }}</td>
+            <td>{{ formatValue(fgsData.yq_out_flow, 'flow') }}</td>
             <td>出水浊度</td>
-            <td>{{ formatTurbidity(fgsData.yq_turbidity) }}</td>
+            <td>{{ formatValue(fgsData.yq_turbidity, 'turbidity') }}</td>
             <td>出水余氯</td>
-            <td>{{ formatResidualChlorine(fgsData.yq_chlorine_dioxide) }}</td>
+            <td>{{ formatValue(fgsData.yq_chlorine_dioxide, 'residualChlorine') }}</td>
           </tr>
           <tr>
             <td colspan="2">清水池液位</td>
-            <td>{{ formatLevel(fgsData.yq_level) }}</td>
+            <td>{{ formatValue(fgsData.yq_level, 'level') }}</td>
             <td colspan="2">出水压力</td>
             <td>{{ fgsData.yq_out_pressure?.toFixed(2) }} mPa</td>
           </tr>
@@ -479,23 +454,23 @@ onUnmounted(() => {
           <tr>
             <td colspan="2">1#送水泵</td>
             <td>工频</td>
-            <td>{{ formatCurrent(fgsData.yq_pump1_current) }}</td>
+            <td>{{ formatValue(fgsData.yq_pump1_current, 'current') }}</td>
             <td rowspan="4" colspan="2">/</td>
           </tr>        
           <tr>
             <td colspan="2">2#送水泵</td>
             <td>工频</td>
-            <td>{{ formatCurrent(fgsData.yq_pump2_current) }}</td>
+            <td>{{ formatValue(fgsData.yq_pump2_current, 'current') }}</td>
           </tr>
           <tr>
             <td colspan="2">3#送水泵</td>
-            <td>{{ formatFrequency(fgsData.yq_pump3_freq) }}</td>
-            <td>{{ formatCurrent(fgsData.yq_pump3_current) }}</td>
+            <td>{{ formatValue(fgsData.yq_pump3_freq, 'frequency') }}</td>
+            <td>{{ formatValue(fgsData.yq_pump3_current, 'current') }}</td>
           </tr>
           <tr>
             <td colspan="2">4#送水泵</td>
-            <td>{{ formatFrequency(fgsData.yq_pump4_freq) }}</td>
-            <td>{{ formatCurrent(fgsData.yq_pump4_current) }}</td>
+            <td>{{ formatValue(fgsData.yq_pump4_freq, 'frequency') }}</td>
+            <td>{{ formatValue(fgsData.yq_pump4_current, 'current') }}</td>
           </tr>
         </tbody>
       </table>
@@ -504,24 +479,61 @@ onUnmounted(() => {
 </template>
 
 <style>
-
+:root {
+  --base-font-size: 0.65vw;
+  --caption-font-size: 0.9vw;
+  --table-padding: 2px 4px;
+}
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 10px;
-  font-size: 12px;
+  font-size: var(--base-font-size);
+  font-family: '微软雅黑', 'Times New Roman', serif;
 }
 
 caption {
   font-weight: bold;
   text-align: center;
   padding: 5px;
+  font-size: var(--caption-font-size);
+  font-family: '微软雅黑', 'Times New Roman', serif;
+  color: red;
 }
 
 td {
   border: 1px solid #ccc;
-  padding: 4px;
+  padding: var(--table-padding);
   text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  :root {
+    --base-font-size: 0.7vw;
+    --caption-font-size: 0.95vw;
+  }
+}
+
+@media (max-width: 992px) {
+  :root {
+    --base-font-size: 0.8vw;
+    --caption-font-size: 1.1vw;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --base-font-size: 1.2vw;
+    --caption-font-size: 1.5vw;
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --base-font-size: 1.8vw;
+    --caption-font-size: 2.2vw;
+  }
 }
 </style>
