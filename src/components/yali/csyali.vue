@@ -47,7 +47,7 @@ onMounted(() => {
     .then((AMap) => {
       map.value = new AMap.Map("csyl_container", {
         zoom: 14,
-        center:[103.114203, 30.069500],
+        center:[103.114203, 30.075500],
         resizeEnable: true,
       });
 

@@ -480,8 +480,7 @@ onUnmounted(() => {
             <td colspan="2">1#送水泵</td>
             <td>工频</td>
             <td>{{ formatCurrent(fgsData.yq_pump1_current) }}</td>
-          
-            <td rowspan="4" colspan="2">{{ formatRunningStatus(fgsData.yq_pump1_running, fgsData.yq_pump1_fault) }} 需要修改</td>
+            <td rowspan="4" colspan="2">/</td>
           </tr>        
           <tr>
             <td colspan="2">2#送水泵</td>
@@ -505,13 +504,7 @@ onUnmounted(() => {
 </template>
 
 <style>
-/* 保持原有样式不变 */
-.container-head {
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
-}
+
 
 table {
   width: 100%;

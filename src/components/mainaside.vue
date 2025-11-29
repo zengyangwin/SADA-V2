@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   // 版本号
-  const version='v2.0.0'
+  const version='v2.1.0'
 
   import {
     Document,

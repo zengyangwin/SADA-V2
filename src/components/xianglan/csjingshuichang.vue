@@ -352,10 +352,10 @@ onUnmounted(() => {
       </table>
     </div>
 
-    <!-- 一期生化系统 -->
+    <!-- 1/2#生产线 -->
     <div style="width:24%;display:inline-block">
       <table>    
-        <caption>一期生化系统</caption>
+        <caption>1#、2#生化生产线</caption>
         <tbody>
           <tr>
             <td rowspan="11" style="font-family: '微软雅黑', 'Times New Roman', serif; font-size: 15px; font-weight: bold; text-align: center;">生化池</td>
@@ -445,10 +445,10 @@ onUnmounted(() => {
       </table>
     </div>
 
-    <!-- 二期生化系统 -->
+    <!-- 3#、4#生产线 -->
     <div style="width:24%;display:inline-block">
       <table>    
-        <caption>二期生化系统</caption>
+        <caption>3#、4#生化生产线</caption>
         <tbody>
           <tr>
             <td rowspan="14" style="font-family: '微软雅黑', 'Times New Roman', serif; font-size: 15px; font-weight: bold; text-align: center;">生化池</td>

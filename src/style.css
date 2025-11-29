@@ -32,11 +32,6 @@ body {
   box-sizing: border-box;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -76,7 +71,6 @@ td{
 }
 
 .container-head {
-  font-size: 6vh;
   font-weight: bold;
   color: black;
   font-family: '黑体','times new roman';
@@ -87,10 +81,10 @@ td{
   justify-content: center;
   margin-bottom: 1vh; 
   margin-top: 1vh; 
-  font-weight: bold;
   color:rgb(50, 82, 107);
-  border-bottom:3px solid rgb(50, 82, 107);
   position:relative;
+  font-size: 3vw;
+  border-bottom: 3px solid rgb(50, 82, 107); /* 添加下划线 */
 }
 
 

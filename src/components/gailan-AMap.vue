@@ -44,14 +44,14 @@ const updateDatacsc = () => {
     .then(data => {
       if (cscMarker.value) {
         cscMarker.value.setLabel({
-          content: renderComponent(csc, { data }),          
+          content: renderComponent(csc, { data }),
         });
       }
     })
     .catch(error => console.error('更新城市厂数据失败:', error));
 };
 
-const updateDatacl = () => {
+const updateDataxzps = () => {
   fetch("http://115.190.14.165:3000/xzps")
     .then(response => response.json())
     .then(data => {
@@ -59,35 +59,15 @@ const updateDatacl = () => {
         clMarker.value.setLabel({
           content: renderComponent(cl, { data }),          
         });
-      }
-    })
-    .catch(error => console.error('更新车岭厂数据失败:', error));
-};
-
-const updateDatamh = () => {
-  fetch("http://115.190.14.165:3000/xzps")
-    .then(response => response.json())
-    .then(data => {
-      if (mhMarker.value) {
         mhMarker.value.setLabel({
           content: renderComponent(mh, { data }),          
         });
-      }
-    })
-    .catch(error => console.error('更新茅河污水厂数据失败:', error));
-};
-
-const updateDatahy = () => {
-  fetch("http://115.190.14.165:3000/xzps")
-    .then(response => response.json())
-    .then(data => {
-      if (hyMarker.value) {
         hyMarker.value.setLabel({
           content: renderComponent(hy, { data }),          
         });
       }
     })
-    .catch(error => console.error('更新红岩数据失败:', error));
+    .catch(error => console.error('更新乡镇排水数据失败:', error));
 };
 
 const updateDatazc = () => {
@@ -111,23 +91,13 @@ const updateDatajzp = () => {
         jzpMarker.value.setLabel({
           content: renderComponent(jzp, { data }),          
         });
-      }
-    })
-    .catch(error => console.error('更新箭竹坪数据失败:', error));
-};
-
-const updateDatayq = () => {
-  fetch("http://115.190.14.165:3000/fengongsi")
-    .then(response => response.json())
-    .then(data => {
-      if (yqMarker.value) {
         yqMarker.value.setLabel({
           content: renderComponent(yq, { data }),  
           direction: 'left',
         });
       }
     })
-    .catch(error => console.error('更新园区数据失败:', error));
+    .catch(error => console.error('更新分公司数据失败:', error));
 };
 
 const updateDatahjg = () => {
@@ -147,12 +117,9 @@ const updateDatahjg = () => {
 // 初始化定时器
 const initTimers = () => {
   updateTimers.value.push(setInterval(updateDatacsc, 30000));
-  updateTimers.value.push(setInterval(updateDatacl, 30000));
-  updateTimers.value.push(setInterval(updateDatamh, 30000));
-  updateTimers.value.push(setInterval(updateDatahy, 30000));
+  updateTimers.value.push(setInterval(updateDataxzps, 30000));  
   updateTimers.value.push(setInterval(updateDatazc, 30000));
   updateTimers.value.push(setInterval(updateDatajzp, 30000));
-  updateTimers.value.push(setInterval(updateDatayq, 30000));
   updateTimers.value.push(setInterval(updateDatahjg, 30000));
 };
 
@@ -303,14 +270,10 @@ onMounted(() => {
 
       // 初始化数据并启动定时器
       updateDatacsc();
-      updateDatacl();
-      updateDatamh();
-      updateDatahy();
+      updateDataxzps();
       updateDatazc();
       updateDatajzp();
-      updateDatayq();
-      updateDatahjg();
-      
+      updateDatahjg();     
       initTimers();
     })
     .catch(error => {

@@ -7,8 +7,6 @@
   import csjingshuichang from './components/xianglan/csjingshuichang.vue';
   import csyali from './components/yali/csyali.vue';
 
-
-
   //以下为路由
   const routes = {
     '/main/gailan': markRaw(gailan),
